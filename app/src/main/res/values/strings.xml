@@ -13,6 +13,7 @@
         <item>budioktaviyan</item>
         <item>hendisantika</item>
         <item>sidiqpermana</item>
+        <item>raassh-23</item>
     </string-array>
 
     <string-array name="name">
@@ -26,6 +27,7 @@
         <item>Budi Oktaviyan</item>
         <item>Hendi Santika</item>
         <item>Sidiq Permana</item>
+        <item>Muhammad Nur Abdurrauf</item>
     </string-array>
 
     <string-array name="location">
@@ -39,6 +41,7 @@
         <item>Jakarta, Indonesia</item>
         <item>Bojongsoang - Bandung Jawa Barat</item>
         <item>Jakarta Indonesia</item>
+        <item>Surabaya, Indonesia</item>
     </string-array>
 
     <string-array name="repository">
@@ -52,6 +55,7 @@
         <item>110</item>
         <item>1064</item>
         <item>65</item>
+        <item>36</item>
     </string-array>
 
     <string-array name="company">
@@ -65,6 +69,7 @@
         <item>KotlinID</item>
         <item>JVMDeveloperID @KotlinID @IDDevOps</item>
         <item>Nusantara Beta Studio</item>
+        <item>Institut Teknologi Sepuluh Nopember</item>
     </string-array>
 
     <string-array name="followers">
@@ -78,6 +83,7 @@
         <item>178</item>
         <item>428</item>
         <item>465</item>
+        <item>15</item>
     </string-array>
 
     <string-array name="following">
@@ -91,6 +97,7 @@
         <item>23</item>
         <item>61</item>
         <item>10</item>
+        <item>16</item>
     </string-array>
 
     <string-array name="avatar">
@@ -104,5 +111,6 @@
         <item>@drawable/user8</item>
         <item>@drawable/user9</item>
         <item>@drawable/user10</item>
+        <item>@drawable/user11</item>
     </string-array>
 </resources>
