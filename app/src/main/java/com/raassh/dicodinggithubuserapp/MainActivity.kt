@@ -1,12 +1,13 @@
 package com.raassh.dicodinggithubuserapp
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.raassh.dicodinggithubuserapp.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityMainBinding
     private val list = ArrayList<User>()
 
     private val listUsers: ArrayList<User>
@@ -14,31 +15,30 @@ class MainActivity : AppCompatActivity() {
             val names = resources.getStringArray(R.array.name)
             val usernames = resources.getStringArray(R.array.username)
             val locations = resources.getStringArray(R.array.location)
-            val repos = resources.getIntArray(R.array.repository)
+            val repos = resources.getStringArray(R.array.repository)
             val companies = resources.getStringArray(R.array.company)
-            val followers = resources.getIntArray(R.array.followers)
-            val followings = resources.getIntArray(R.array.following)
+            val followers = resources.getStringArray(R.array.followers)
+            val followings = resources.getStringArray(R.array.following)
             val photos = resources.obtainTypedArray(R.array.avatar)
 
             val tempList = ArrayList<User>()
             for (i in names.indices) {
                 val user = User(
-                    names[i],
                     usernames[i],
+                    names[i],
                     locations[i],
-                    repos[i],
+                    repos[i].toInt(),
                     companies[i],
-                    followers[i],
-                    followings[i],
+                    followers[i].toInt(),
+                    followings[i].toInt(),
                     photos.getResourceId(i, -1)
                 )
+
                 tempList.add(user)
             }
 
             return tempList
         }
-
-    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,7 +59,11 @@ class MainActivity : AppCompatActivity() {
 
         listUserAdapter.setOnItemClickCallback(object : ListUserAdapter.OnItemClickCallback {
             override fun onItemClicked(user: User) {
-                Toast.makeText(this@MainActivity, user.toString(), Toast.LENGTH_SHORT).show()
+                val detailsIntent = Intent(this@MainActivity, UserDetailActivity::class.java)
+                    .apply {
+                        putExtra(UserDetailActivity.EXTRA_USER, user)
+                    }
+                startActivity(detailsIntent)
             }
         })
     }

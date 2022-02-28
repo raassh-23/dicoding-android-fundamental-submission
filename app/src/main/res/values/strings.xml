@@ -1,6 +1,14 @@
 <resources>
     <string name="app_name">Dicoding Github User App</string>
     <string name="main_title">List of Github Users</string>
+    <string name="user_details">User Details</string>
+    <string name="company">Company: %1$s</string>
+    <string name="location">Location: %1$s</string>
+    <string name="repository">Repositories:</string>
+    <string name="followers">Followers:</string>
+    <string name="following">Following:</string>
+    <string name="back">Back</string>
+    <string name="share">Share</string>
 
     <string-array name="username">
         <item>JakeWharton</item>

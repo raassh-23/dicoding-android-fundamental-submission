@@ -13,4 +13,17 @@ data class User(
     val followersCount: Int,
     val followingCount: Int,
     val avatar: Int
-) : Parcelable
+) : Parcelable {
+    override fun toString(): String {
+        return """
+            Github User
+            Name: $name
+            Username: $username
+            Company: $company
+            Location: $location
+            Repositories: $repositoryCount
+            Followers: $followersCount
+            Following: $followingCount
+        """.trimIndent()
+    }
+}
