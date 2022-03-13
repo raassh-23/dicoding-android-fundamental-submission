@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class ListUsersResponse(
 	@field:SerializedName("ListUsersResponse")
-	val listUsersResponse: List<ListUsersResponseItem?>
+	val listUsersResponse: List<ListUsersResponseItem>
 )
 
 data class ListUsersResponseItem(

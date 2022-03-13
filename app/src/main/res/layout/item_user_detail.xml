@@ -20,28 +20,12 @@
         tools:src="@drawable/user1" />
 
     <TextView
-        android:id="@+id/tv_item_name"
-        style="@style/ContentText.Item"
-        app:layout_constraintBottom_toTopOf="@+id/guideline"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/photo"
-        app:layout_constraintTop_toTopOf="@+id/photo"
-        tools:text="Name" />
-
-    <TextView
         android:id="@+id/tv_item_username"
-        style="@style/ContentText.Item.Subtitle"
+        style="@style/ContentText.Item"
         app:layout_constraintBottom_toBottomOf="@+id/photo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/photo"
-        app:layout_constraintTop_toBottomOf="@+id/guideline"
+        app:layout_constraintTop_toTopOf="parent"
         tools:text="Username" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.5" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

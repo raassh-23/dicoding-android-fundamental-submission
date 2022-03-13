@@ -12,7 +12,7 @@ data class User(
     val company: String,
     val followersCount: Int,
     val followingCount: Int,
-    val avatar: Int
+    val avatar: String
 ) : Parcelable {
     override fun toString(): String {
         return """

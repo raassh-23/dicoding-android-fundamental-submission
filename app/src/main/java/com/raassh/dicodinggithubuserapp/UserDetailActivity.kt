@@ -31,27 +31,27 @@ class UserDetailActivity : AppCompatActivity() {
     }
 
     private fun showDetails() {
-        val (
-            username,
-            name,
-            location,
-            repositoryCount,
-            company,
-            followersCount,
-            followingCount,
-            avatar
-        ) = user
-
-        binding.apply {
-            detailsAvatar.setImageResource(avatar)
-            tvDetailsName.text = name
-            tvDetailsUsername.text = username
-            tvDetailsCompany.text = getString(R.string.company, company)
-            tvDetailsLocation.text = getString(R.string.location, location)
-            tvDetailsRepoCount.text = repositoryCount.toString()
-            tvDetailsFollowerCount.text = followersCount.toString()
-            tvDetailsFollowingCount.text = followingCount.toString()
-        }
+//        val (
+//            username,
+//            name,
+//            location,
+//            repositoryCount,
+//            company,
+//            followersCount,
+//            followingCount,
+//            avatar
+//        ) = user
+//
+//        binding.apply {
+//            detailsAvatar.setImageResource(avatar)
+//            tvDetailsName.text = name
+//            tvDetailsUsername.text = username
+//            tvDetailsCompany.text = getString(R.string.company, company)
+//            tvDetailsLocation.text = getString(R.string.location, location)
+//            tvDetailsRepoCount.text = repositoryCount.toString()
+//            tvDetailsFollowerCount.text = followersCount.toString()
+//            tvDetailsFollowingCount.text = followingCount.toString()
+//        }
     }
 
     companion object {

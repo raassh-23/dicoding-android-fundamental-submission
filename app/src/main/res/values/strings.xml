@@ -9,6 +9,7 @@
     <string name="following">Following:</string>
     <string name="back">Back</string>
     <string name="share">Share</string>
+    <string name="result_count">Result count: %1$d</string>
 
     <string-array name="username">
         <item>JakeWharton</item>
