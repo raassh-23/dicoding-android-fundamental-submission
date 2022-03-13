@@ -1,6 +1,7 @@
 package com.raassh.dicodinggithubuserapp
 
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -19,7 +20,7 @@ class MainViewModel : ViewModel() {
     val isLoading: LiveData<Boolean> = _isLoading
 
     init {
-        searchUsers("\"\"") // search empty query to show all user
+        searchUsers(emptyQuery) // search empty query to show all user
     }
 
     fun searchUsers(query: String) {
@@ -50,5 +51,6 @@ class MainViewModel : ViewModel() {
 
     companion object {
         private const val TAG = "MainViewModel"
+        const val emptyQuery = "\"\""
     }
 }

@@ -1,11 +1,14 @@
 package com.raassh.dicodinggithubuserapp
 
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.app.SearchManager
 import android.os.Bundle
-import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
+import androidx.core.content.getSystemService
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.raassh.dicodinggithubuserapp.databinding.ActivityMainBinding
 
@@ -20,49 +23,14 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val mainViewModel by viewModels<MainViewModel>()
 
-//    private val list = ArrayList<User>()
-//
-//    private val listUsers: ArrayList<User>
-//        get() {
-//            val names = resources.getStringArray(R.array.name)
-//            val usernames = resources.getStringArray(R.array.username)
-//            val locations = resources.getStringArray(R.array.location)
-//            val repos = resources.getStringArray(R.array.repository)
-//            val companies = resources.getStringArray(R.array.company)
-//            val followers = resources.getStringArray(R.array.followers)
-//            val followings = resources.getStringArray(R.array.following)
-//            val photos = resources.obtainTypedArray(R.array.avatar)
-//
-//            val tempList = ArrayList<User>()
-//            for (i in names.indices) {
-//                val user = User(
-//                    usernames[i],
-//                    names[i],
-//                    locations[i],
-//                    repos[i].toInt(),
-//                    companies[i],
-//                    followers[i].toInt(),
-//                    followings[i].toInt(),
-//                    photos.getResourceId(i, -1)
-//                )
-//
-//                tempList.add(user)
-//            }
-//
-//            photos.recycle()
-//
-//            return tempList
-//        }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val layoutManager = LinearLayoutManager(this)
         binding.rvUsers.apply {
             setHasFixedSize(true)
-            this.layoutManager = layoutManager
+            layoutManager = LinearLayoutManager(this@MainActivity)
         }
 
         mainViewModel.listUsers.observe(this) {
@@ -76,9 +44,45 @@ class MainActivity : AppCompatActivity() {
         mainViewModel.isLoading.observe(this) {
             showLoading(it)
         }
+    }
 
-//        list.addAll(listUsers)
-//        showRecyclerList()
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.option_menu, menu)
+
+        val searchManager = getSystemService<SearchManager>()
+        val menuItem = menu.findItem(R.id.search)
+        val searchView = menuItem.actionView as SearchView
+
+        searchView.setSearchableInfo(searchManager?.getSearchableInfo(componentName))
+        searchView.queryHint = getString(R.string.search_hint)
+
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+                mainViewModel.searchUsers(query)
+                searchView.clearFocus()
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String): Boolean {
+                return false
+            }
+        })
+
+        menuItem.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
+            override fun onMenuItemActionExpand(item: MenuItem?): Boolean {
+                return true
+            }
+
+            override fun onMenuItemActionCollapse(item: MenuItem?): Boolean {
+                mainViewModel.searchUsers(MainViewModel.emptyQuery)
+
+                return true
+            }
+
+        })
+
+        return true
     }
 
     private fun setUsersData(listUsers: List<ListUsersResponseItem>) {
@@ -94,15 +98,15 @@ class MainActivity : AppCompatActivity() {
         val listUserAdapter = ListUserAdapter(users)
         binding.rvUsers.adapter = listUserAdapter
 
-        listUserAdapter.setOnItemClickCallback(object : ListUserAdapter.OnItemClickCallback {
-            override fun onItemClicked(user: UserItem) {
-                val detailsIntent = Intent(this@MainActivity, UserDetailActivity::class.java)
-                    .apply {
-                        putExtra(UserDetailActivity.EXTRA_USER, user)
-                    }
-                startActivity(detailsIntent)
-            }
-        })
+//        listUserAdapter.setOnItemClickCallback(object : ListUserAdapter.OnItemClickCallback {
+//            override fun onItemClicked(user: UserItem) {
+//                val detailsIntent = Intent(this@MainActivity, UserDetailActivity::class.java)
+//                    .apply {
+//                        putExtra(UserDetailActivity.EXTRA_USER, user)
+//                    }
+//                startActivity(detailsIntent)
+//            }
+//        })
     }
 
     private fun showLoading(isLoading: Boolean) {
