@@ -7,6 +7,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.raassh.dicodinggithubuserapp.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
+    /*
+    * Saya sudah membaca saran dari submission sebelumnya.
+    * tetapi dari penjelasan artikel yang diberikan, cara mendeklarasikan binding dengan lateinit
+    * hanya menyebabkan memory leaks jika dilakukan pada fragment.
+    * bahkan dari dokumentasi ViewBinding, sample code untuk activity juga menggunakan lateinit
+    * karena itu, saya tidak melakukan perubahan apa-apa untuk ViewBinding disini..
+    * */
     private lateinit var binding: ActivityMainBinding
     private val list = ArrayList<User>()
 
@@ -36,6 +43,8 @@ class MainActivity : AppCompatActivity() {
 
                 tempList.add(user)
             }
+
+            photos.recycle()
 
             return tempList
         }

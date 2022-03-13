@@ -28,9 +28,11 @@ class ListUserAdapter(private val listUser: ArrayList<User>) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val (username, name, _, _, _, _, _, avatar) = listUser[position]
 
-        holder.binding.photo.setImageResource(avatar)
-        holder.binding.tvItemName.text = name
-        holder.binding.tvItemUsername.text = username
+        holder.binding.apply {
+            photo.setImageResource(avatar)
+            tvItemName.text = name
+            tvItemUsername.text = username
+        }
 
         holder.itemView.setOnClickListener {
             onItemClickCallback.onItemClicked(listUser[holder.adapterPosition])

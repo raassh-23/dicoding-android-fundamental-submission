@@ -9,10 +9,6 @@ class UserDetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityUserDetailBinding
     private lateinit var user: User
 
-    companion object {
-        const val EXTRA_USER = "extra_user"
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityUserDetailBinding.inflate(layoutInflater)
@@ -46,13 +42,19 @@ class UserDetailActivity : AppCompatActivity() {
             avatar
         ) = user
 
-        binding.detailsAvatar.setImageResource(avatar)
-        binding.tvDetailsName.text = name
-        binding.tvDetailsUsername.text = username
-        binding.tvDetailsCompany.text = getString(R.string.company, company)
-        binding.tvDetailsLocation.text = getString(R.string.location, location)
-        binding.tvDetailsRepoCount.text = repositoryCount.toString()
-        binding.tvDetailsFollowerCount.text = followersCount.toString()
-        binding.tvDetailsFollowingCount.text = followingCount.toString()
+        binding.apply {
+            detailsAvatar.setImageResource(avatar)
+            tvDetailsName.text = name
+            tvDetailsUsername.text = username
+            tvDetailsCompany.text = getString(R.string.company, company)
+            tvDetailsLocation.text = getString(R.string.location, location)
+            tvDetailsRepoCount.text = repositoryCount.toString()
+            tvDetailsFollowerCount.text = followersCount.toString()
+            tvDetailsFollowingCount.text = followingCount.toString()
+        }
+    }
+
+    companion object {
+        const val EXTRA_USER = "extra_user"
     }
 }
