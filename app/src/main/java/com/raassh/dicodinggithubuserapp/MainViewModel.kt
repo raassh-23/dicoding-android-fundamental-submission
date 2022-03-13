@@ -19,6 +19,9 @@ class MainViewModel : ViewModel() {
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
+    private val _errorMessage = MutableLiveData<Event<String>>()
+    val errorMessage: LiveData<Event<String>> = _errorMessage
+
     init {
         searchUsers(emptyQuery) // search empty query to show all user
     }
@@ -37,13 +40,13 @@ class MainViewModel : ViewModel() {
                     _resultCount.value = response.body()?.totalCount
                     _listUsers.value = response.body()?.items
                 } else {
-                    Log.e(TAG, "onResponse: ${response.message()}")
+                    _errorMessage.value = Event(response.message())
                 }
             }
 
             override fun onFailure(call: Call<SearchUserResponse>, t: Throwable) {
                 _isLoading.value = false
-                Log.e(TAG, "onFailure: ${t.message}")
+                _errorMessage.value = Event(t.message as String)
             }
 
         })
