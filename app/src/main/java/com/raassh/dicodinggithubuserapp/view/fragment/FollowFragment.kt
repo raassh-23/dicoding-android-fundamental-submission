@@ -14,6 +14,7 @@ import com.raassh.dicodinggithubuserapp.adapter.ListUserAdapter
 import com.raassh.dicodinggithubuserapp.api.ListUsersResponse
 import com.raassh.dicodinggithubuserapp.databinding.FragmentFollowBinding
 import com.raassh.dicodinggithubuserapp.misc.UserItem
+import com.raassh.dicodinggithubuserapp.misc.createUserArrayList
 import com.raassh.dicodinggithubuserapp.misc.visibility
 import com.raassh.dicodinggithubuserapp.viewmodel.FollowViewModel
 
@@ -71,16 +72,7 @@ class FollowFragment : Fragment() {
     }
 
     private fun setUsersData(listUsers: List<ListUsersResponse>) {
-        val users = ArrayList<UserItem>()
-
-        for (user in listUsers) {
-            users.add(
-                UserItem(
-                    user.login,
-                    user.avatarUrl
-                )
-            )
-        }
+        val users = createUserArrayList(listUsers)
 
         val listUserAdapter = ListUserAdapter(users)
         binding.rvUsers.adapter = listUserAdapter

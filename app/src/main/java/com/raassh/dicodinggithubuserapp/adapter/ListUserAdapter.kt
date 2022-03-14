@@ -9,7 +9,7 @@ import com.raassh.dicodinggithubuserapp.databinding.ItemUserDetailBinding
 
 class ListUserAdapter(private val listUser: ArrayList<UserItem>) :
     RecyclerView.Adapter<ListUserAdapter.ViewHolder>() {
-    private lateinit var onItemClickCallback: OnItemClickCallback
+    private var onItemClickCallback: OnItemClickCallback? = null
 
     interface OnItemClickCallback {
         fun onItemClicked(user: UserItem)
@@ -33,12 +33,13 @@ class ListUserAdapter(private val listUser: ArrayList<UserItem>) :
         holder.binding.apply {
             Glide.with(holder.itemView.context)
                 .load(avatar)
+                .circleCrop()
                 .into(photo)
             tvItemUsername.text = username
         }
 
         holder.itemView.setOnClickListener {
-            onItemClickCallback.onItemClicked(listUser[holder.adapterPosition])
+            onItemClickCallback?.onItemClicked(listUser[holder.adapterPosition])
         }
     }
 

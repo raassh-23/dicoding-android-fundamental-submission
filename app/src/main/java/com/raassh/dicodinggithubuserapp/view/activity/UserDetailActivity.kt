@@ -90,6 +90,7 @@ class UserDetailActivity : AppCompatActivity() {
             binding.apply {
                 Glide.with(this@UserDetailActivity)
                     .load(avatarUrl)
+                    .circleCrop()
                     .into(detailsAvatar)
                 tvDetailsName.text = name
                 tvDetailsUsername.text = login
