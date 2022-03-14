@@ -25,6 +25,9 @@ class MainViewModel : ViewModel() {
     private val _error = MutableLiveData<Event<String>>()
     val error: LiveData<Event<String>> = _error
 
+    private val _canRetry = MutableLiveData<Boolean>()
+    val canRetry: LiveData<Boolean> = _canRetry
+
     private var lastQuery: String = emptyQuery
 
     init {
@@ -35,9 +38,14 @@ class MainViewModel : ViewModel() {
         searchUsers(lastQuery)
     }
 
+    fun setCanRetry() {
+        _canRetry.value = true
+    }
+
     fun searchUsers(query: String) {
         lastQuery = query
         _isLoading.value = true
+        _canRetry.value = false
 
         ApiConfig.getApiService().getSearchedUsers(query)
             .enqueue(object : Callback<SearchUserResponse> {

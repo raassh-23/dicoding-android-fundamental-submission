@@ -18,7 +18,12 @@ import com.raassh.dicodinggithubuserapp.viewmodel.UserDetailViewModel
 
 class UserDetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityUserDetailBinding
-    private val userDetailViewModel by viewModels<UserDetailViewModel>()
+    private val userDetailViewModel
+            by viewModels<UserDetailViewModel> {
+                UserDetailViewModel.Factory(
+                    intent.getParcelableExtra<UserItem>(EXTRA_USER)?.username ?: ""
+                )
+            }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,8 +32,6 @@ class UserDetailActivity : AppCompatActivity() {
 
         val user = intent.getParcelableExtra<UserItem>(EXTRA_USER) as UserItem
         userDetailViewModel.apply {
-            getUserDetail(user.username)
-
             this.user.observe(this@UserDetailActivity) {
                 showDetails(it)
             }
@@ -39,8 +42,12 @@ class UserDetailActivity : AppCompatActivity() {
 
             error.observe(this@UserDetailActivity) {
                 it.getContentIfNotHandled()?.let { text ->
-                    showError(text, user.username)
+                    showError(text)
                 }
+            }
+
+            canRetry.observe(this@UserDetailActivity) {
+                showRetry(it)
             }
         }
 
@@ -57,7 +64,7 @@ class UserDetailActivity : AppCompatActivity() {
                 startActivity(shareIntent)
             }
 
-            btnRetry.setOnClickListener { userDetailViewModel.getUserDetail(user.username) }
+            btnRetry.setOnClickListener { userDetailViewModel.getUserDetail() }
         }
 
         val viewPager = binding.followViewPager.apply {
@@ -72,13 +79,13 @@ class UserDetailActivity : AppCompatActivity() {
 
     }
 
-    private fun showError(text: String, username: String) {
+    private fun showError(text: String) {
         Snackbar.make(binding.root, getString(R.string.error_message, text), Snackbar.LENGTH_SHORT)
-            .setAction(R.string.try_again) { userDetailViewModel.getUserDetail(username) }
+            .setAction(R.string.try_again) { userDetailViewModel.getUserDetail() }
             .addCallback(object : Snackbar.Callback() {
                 override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
                     super.onDismissed(transientBottomBar, event)
-                    binding.btnRetry.visibility = visibility(true)
+                    userDetailViewModel.setCanRetry()
                 }
             })
             .show()
@@ -110,7 +117,16 @@ class UserDetailActivity : AppCompatActivity() {
             detailsContent.visibility = visibility(!isLoading)
 
             if (isLoading) {
-                btnRetry.visibility = visibility(false)
+                detailsStatic.visibility = visibility(false)
+            }
+        }
+    }
+
+    private fun showRetry(canRetry: Boolean) {
+        binding.apply {
+            btnRetry.visibility = visibility(canRetry)
+
+            if (canRetry) {
                 detailsStatic.visibility = visibility(false)
             }
         }

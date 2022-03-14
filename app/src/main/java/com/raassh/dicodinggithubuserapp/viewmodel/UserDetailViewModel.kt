@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.raassh.dicodinggithubuserapp.api.ApiConfig
 import com.raassh.dicodinggithubuserapp.api.UserDetailResponse
 import com.raassh.dicodinggithubuserapp.misc.Event
@@ -11,7 +12,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class UserDetailViewModel : ViewModel() {
+class UserDetailViewModel(private val username: String) : ViewModel() {
     private val _user = MutableLiveData<UserDetailResponse>()
     val user: LiveData<UserDetailResponse> = _user
 
@@ -21,8 +22,20 @@ class UserDetailViewModel : ViewModel() {
     private val _error = MutableLiveData<Event<String>>()
     val error: LiveData<Event<String>> = _error
 
-    fun getUserDetail(username: String) {
+    private val _canRetry = MutableLiveData<Boolean>()
+    val canRetry: LiveData<Boolean> = _canRetry
+
+    init {
+        getUserDetail()
+    }
+
+    fun setCanRetry() {
+        _canRetry.value = true
+    }
+
+    fun getUserDetail() {
         _isLoading.value = true
+        _canRetry.value = false
 
         ApiConfig.getApiService().getUserDetail(username)
             .enqueue(object : Callback<UserDetailResponse> {
@@ -50,5 +63,13 @@ class UserDetailViewModel : ViewModel() {
 
     companion object {
         private const val TAG = "UserDetailViewModel"
+    }
+
+    // Ref: https://medium.com/@lucasnrb/advanced-viewmodel-9cca1499addb
+    @Suppress("UNCHECKED_CAST")
+    class Factory(private val username: String) : ViewModelProvider.Factory {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+            return UserDetailViewModel(username) as T
+        }
     }
 }

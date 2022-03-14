@@ -55,6 +55,10 @@ class MainActivity : AppCompatActivity() {
                     showError(text)
                 }
             }
+
+            canRetry.observe(this@MainActivity) {
+                showRetry(it)
+            }
         }
 
         val layoutManager = LinearLayoutManager(this)
@@ -116,28 +120,39 @@ class MainActivity : AppCompatActivity() {
     private fun setUsersData(listUsers: List<ListUsersResponse>) {
         val users = createUserArrayList(listUsers)
 
-        binding.rvUsers.adapter = ListUserAdapter(users).apply {
-            setOnItemClickCallback(object : ListUserAdapter.OnItemClickCallback {
-                override fun onItemClicked(user: UserItem) {
-                    val detailsIntent = Intent(this@MainActivity, UserDetailActivity::class.java)
-                        .apply {
-                            putExtra(UserDetailActivity.EXTRA_USER, user)
-                        }
-                    startActivity(detailsIntent)
-                }
-            })
+        binding.apply {
+            rvUsers.adapter = ListUserAdapter(users).apply {
+                setOnItemClickCallback(object : ListUserAdapter.OnItemClickCallback {
+                    override fun onItemClicked(user: UserItem) {
+                        val detailsIntent = Intent(this@MainActivity, UserDetailActivity::class.java)
+                            .apply {
+                                putExtra(UserDetailActivity.EXTRA_USER, user)
+                            }
+                        startActivity(detailsIntent)
+                    }
+                })
+            }
+
+            this.listUsers.visibility = visibility(true)
         }
     }
 
     private fun showLoading(isLoading: Boolean) {
         binding.apply {
             progressBar.visibility = visibility(isLoading)
-            listUsers.visibility = visibility(!isLoading)
 
             if (isLoading) {
-                tvResultCount.text = ""
-                btnRetry.visibility = visibility(false)
-                rvUsers.adapter = null
+                listUsers.visibility = visibility(false)
+            }
+        }
+    }
+
+    private fun showRetry(canRetry: Boolean) {
+        binding.apply {
+            btnRetry.visibility = visibility(canRetry)
+
+            if (canRetry) {
+                listUsers.visibility = visibility(false)
             }
         }
     }
@@ -148,7 +163,7 @@ class MainActivity : AppCompatActivity() {
             .addCallback(object : Snackbar.Callback() {
                 override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
                     super.onDismissed(transientBottomBar, event)
-                    binding.btnRetry.visibility = visibility(true)
+                    mainViewModel.setCanRetry()
                 }
             })
             .show()

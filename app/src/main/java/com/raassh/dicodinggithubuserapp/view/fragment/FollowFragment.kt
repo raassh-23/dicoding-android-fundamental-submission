@@ -21,7 +21,12 @@ class FollowFragment : Fragment() {
 
     private var _binding: FragmentFollowBinding? = null
     private val binding get() = _binding!!
-    private val followViewModel by viewModels<FollowViewModel>()
+    private val followViewModel by viewModels<FollowViewModel> {
+        FollowViewModel.Factory(
+            arguments?.getString(ARG_USERNAME) ?: "",
+            arguments?.getInt(ARG_SECTION_NUMBER) ?: 0
+        )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,10 +38,6 @@ class FollowFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val sectionIndex = arguments?.getInt(ARG_SECTION_NUMBER) as Int
-        val username = arguments?.getString(ARG_USERNAME) as String
-        loadData(sectionIndex, username)
 
         val layoutManager = LinearLayoutManager(requireActivity())
         binding.apply {
@@ -51,15 +52,9 @@ class FollowFragment : Fragment() {
                 )
             }
 
-            btnRetry.setOnClickListener { loadData(sectionIndex, username) }
+            btnRetry.setOnClickListener { followViewModel.getFollowUsers() }
 
-            emptyText.text = getString(
-                R.string.empty_text, if (sectionIndex == 0) {
-                    "Followers"
-                } else {
-                    "Following"
-                }
-            )
+            emptyText.text = getString(R.string.empty_text, followViewModel.followType)
         }
 
         followViewModel.apply {
@@ -73,17 +68,13 @@ class FollowFragment : Fragment() {
 
             error.observe(requireActivity()) {
                 it.getContentIfNotHandled()?.let { text ->
-                    showError(text, sectionIndex, username)
+                    showError(text)
                 }
             }
-        }
-    }
 
-    private fun loadData(sectionIndex: Int, username: String) {
-        if (sectionIndex == 0) {
-            followViewModel.getFollowers(username)
-        } else {
-            followViewModel.getFollowing(username)
+            canRetry.observe(requireActivity()) {
+                binding.btnRetry.visibility = visibility(it)
+            }
         }
     }
 
@@ -103,20 +94,16 @@ class FollowFragment : Fragment() {
         binding.apply {
             progressBar.visibility = visibility(isLoading)
             rvUsers.visibility = visibility(!isLoading)
-
-            if (isLoading) {
-                btnRetry.visibility = visibility(false)
-            }
         }
     }
 
-    private fun showError(text: String, sectionIndex: Int, username: String) {
+    private fun showError(text: String) {
         Snackbar.make(binding.root, getString(R.string.error_message, text), Snackbar.LENGTH_SHORT)
-            .setAction(R.string.try_again) { loadData(sectionIndex, username) }
+            .setAction(R.string.try_again) { followViewModel.getFollowUsers() }
             .addCallback(object : Snackbar.Callback() {
                 override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
                     super.onDismissed(transientBottomBar, event)
-                    binding.btnRetry.visibility = visibility(true)
+                    followViewModel.setCanRetry()
                 }
             })
             .show()
