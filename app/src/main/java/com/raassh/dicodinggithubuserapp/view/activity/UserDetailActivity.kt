@@ -69,6 +69,7 @@ class UserDetailActivity : AppCompatActivity() {
         val tabs = binding.followTabs
         TabLayoutMediator(tabs, viewPager) { tab, position ->
             tab.text = getString(TAB_TITLES[position])
+
         }.attach()
 
     }

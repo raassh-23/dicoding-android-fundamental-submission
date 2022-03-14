@@ -146,7 +146,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_details_follower_count"
-        app:tabTextColor="@android:color/white" />
+        app:tabTextColor="@android:color/white"
+        app:tabIndicatorColor="@color/yellow_500" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/follow_view_pager"

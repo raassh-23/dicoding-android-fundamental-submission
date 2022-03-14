@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.raassh.dicodinggithubuserapp.R
@@ -39,11 +40,21 @@ class FollowFragment : Fragment() {
         val username = arguments?.getString(ARG_USERNAME) as String
         loadData(sectionIndex, username)
 
+        val layoutManager = LinearLayoutManager(requireActivity())
         binding.apply {
-            rvUsers.setHasFixedSize(true)
-            rvUsers.layoutManager = LinearLayoutManager(requireActivity())
+            rvUsers.apply {
+                setHasFixedSize(true)
+                this.layoutManager = layoutManager
+                addItemDecoration(DividerItemDecoration(requireActivity(), layoutManager.orientation))
+            }
 
             btnRetry.setOnClickListener { loadData(sectionIndex, username) }
+
+            emptyText.text = getString(R.string.empty_text, if (sectionIndex == 0) {
+                "Followers"
+            } else {
+                "Following"
+            })
         }
 
         followViewModel.apply {
@@ -74,8 +85,13 @@ class FollowFragment : Fragment() {
     private fun setUsersData(listUsers: List<ListUsersResponse>) {
         val users = createUserArrayList(listUsers)
 
-        val listUserAdapter = ListUserAdapter(users)
-        binding.rvUsers.adapter = listUserAdapter
+        binding.apply {
+            if (users.count() == 0) {
+                emptyText.visibility = visibility(true)
+            } else {
+                rvUsers.adapter = ListUserAdapter(users)
+            }
+        }
     }
 
     private fun showLoading(isLoading: Boolean) {

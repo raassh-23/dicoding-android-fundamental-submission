@@ -12,6 +12,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.getSystemService
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.raassh.dicodinggithubuserapp.*
@@ -59,9 +60,13 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        val layoutManager = LinearLayoutManager(this)
         binding.apply {
-            rvUsers.setHasFixedSize(true)
-            rvUsers.layoutManager = LinearLayoutManager(this@MainActivity)
+            rvUsers.apply {
+                setHasFixedSize(true)
+                this.layoutManager = layoutManager
+                addItemDecoration(DividerItemDecoration(this@MainActivity, layoutManager.orientation))
+            }
 
             btnRetry.setOnClickListener { mainViewModel.searchUsers() }
         }
@@ -109,18 +114,17 @@ class MainActivity : AppCompatActivity() {
     private fun setUsersData(listUsers: List<ListUsersResponse>) {
         val users = createUserArrayList(listUsers)
 
-        val listUserAdapter = ListUserAdapter(users)
-        binding.rvUsers.adapter = listUserAdapter
-
-        listUserAdapter.setOnItemClickCallback(object : ListUserAdapter.OnItemClickCallback {
-            override fun onItemClicked(user: UserItem) {
-                val detailsIntent = Intent(this@MainActivity, UserDetailActivity::class.java)
-                    .apply {
-                        putExtra(UserDetailActivity.EXTRA_USER, user)
-                    }
-                startActivity(detailsIntent)
-            }
-        })
+        binding.rvUsers.adapter = ListUserAdapter(users).apply {
+            setOnItemClickCallback(object : ListUserAdapter.OnItemClickCallback {
+                override fun onItemClicked(user: UserItem) {
+                    val detailsIntent = Intent(this@MainActivity, UserDetailActivity::class.java)
+                        .apply {
+                            putExtra(UserDetailActivity.EXTRA_USER, user)
+                        }
+                    startActivity(detailsIntent)
+                }
+            })
+        }
     }
 
     private fun showLoading(isLoading: Boolean) {
