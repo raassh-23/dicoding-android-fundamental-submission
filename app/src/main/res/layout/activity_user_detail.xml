@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.UserDetailActivity">
+    tools:context=".view.activity.UserDetailActivity">
 
     <TextView
         android:id="@+id/tv_details_title"
@@ -183,4 +183,22 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline4" />
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_details_follower_count"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tv_details_title"
+        tools:visibility="visible" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/details"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="details_avatar, tv_details_name, tv_details_username, tv_details_company, tv_details_location, tv_details_repo, tv_details_repo_count, tv_details_following, tv_details_following_count, tv_details_follower, tv_details_follower_count, btn_share" />
 </androidx.constraintlayout.widget.ConstraintLayout>

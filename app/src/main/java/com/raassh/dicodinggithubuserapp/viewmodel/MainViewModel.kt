@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.raassh.dicodinggithubuserapp.misc.Event
-import com.raassh.dicodinggithubuserapp.api.ListUsersResponseItem
+import com.raassh.dicodinggithubuserapp.api.ListUsersResponse
 import com.raassh.dicodinggithubuserapp.api.SearchUserResponse
 import com.raassh.dicodinggithubuserapp.api.ApiConfig
 import retrofit2.Call
@@ -15,8 +15,8 @@ class MainViewModel : ViewModel() {
     private val _resultCount = MutableLiveData<Int>()
     val resultCount: LiveData<Int> = _resultCount
 
-    private val _listUsers = MutableLiveData<List<ListUsersResponseItem>>()
-    val listUsers: LiveData<List<ListUsersResponseItem>> = _listUsers
+    private val _listUsers = MutableLiveData<List<ListUsersResponse>>()
+    val listUsers: LiveData<List<ListUsersResponse>> = _listUsers
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
@@ -55,7 +55,6 @@ class MainViewModel : ViewModel() {
     }
 
     companion object {
-        private const val TAG = "MainViewModel"
         const val emptyQuery = "\"\""
     }
 }

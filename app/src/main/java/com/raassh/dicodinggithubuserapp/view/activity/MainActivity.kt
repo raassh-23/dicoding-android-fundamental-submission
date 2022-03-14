@@ -1,11 +1,10 @@
-package com.raassh.dicodinggithubuserapp.activity
+package com.raassh.dicodinggithubuserapp.view.activity
 
 import android.app.SearchManager
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -14,9 +13,10 @@ import androidx.core.content.getSystemService
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.raassh.dicodinggithubuserapp.*
 import com.raassh.dicodinggithubuserapp.adapter.ListUserAdapter
-import com.raassh.dicodinggithubuserapp.api.ListUsersResponseItem
+import com.raassh.dicodinggithubuserapp.api.ListUsersResponse
 import com.raassh.dicodinggithubuserapp.databinding.ActivityMainBinding
 import com.raassh.dicodinggithubuserapp.misc.UserItem
+import com.raassh.dicodinggithubuserapp.misc.visibility
 import com.raassh.dicodinggithubuserapp.viewmodel.MainViewModel
 
 class MainActivity : AppCompatActivity() {
@@ -40,21 +40,23 @@ class MainActivity : AppCompatActivity() {
             layoutManager = LinearLayoutManager(this@MainActivity)
         }
 
-        mainViewModel.listUsers.observe(this) {
-            setUsersData(it)
-        }
+        mainViewModel.apply {
+            listUsers.observe(this@MainActivity) {
+                setUsersData(it)
+            }
 
-        mainViewModel.resultCount.observe(this) {
-            binding.tvResultCount.text = getString(R.string.result_count, it)
-        }
+            resultCount.observe(this@MainActivity) {
+                binding.tvResultCount.text = getString(R.string.result_count, it)
+            }
 
-        mainViewModel.isLoading.observe(this) {
-            showLoading(it)
-        }
+            isLoading.observe(this@MainActivity) {
+                showLoading(it)
+            }
 
-        mainViewModel.errorMessage.observe(this) {
-            it.getContentIfNotHandled()?.let { text ->
-                Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
+            errorMessage.observe(this@MainActivity) {
+                it.getContentIfNotHandled()?.let { text ->
+                    Toast.makeText(this@MainActivity, text, Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }
@@ -98,7 +100,7 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
-    private fun setUsersData(listUsers: List<ListUsersResponseItem>) {
+    private fun setUsersData(listUsers: List<ListUsersResponse>) {
         val users = ArrayList<UserItem>()
 
         for (user in listUsers) {
@@ -125,16 +127,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showLoading(isLoading: Boolean) {
-        fun visibility(visible: Boolean) = if (visible) {
-            View.VISIBLE
-        } else {
-            View.INVISIBLE
-        }
-
         binding.apply {
             progressBar.visibility = visibility(isLoading)
-            tvResultCount.visibility = visibility(!isLoading)
-            rvUsers.visibility = visibility(!isLoading)
+            listUsers.visibility = visibility(!isLoading)
         }
     }
 }

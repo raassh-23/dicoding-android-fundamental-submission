@@ -12,10 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DicodingGithubUserApp">
         <activity
-            android:name=".activity.UserDetailActivity"
+            android:name="com.raassh.dicodinggithubuserapp.view.activity.UserDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.MainActivity"
+            android:name="com.raassh.dicodinggithubuserapp.view.activity.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

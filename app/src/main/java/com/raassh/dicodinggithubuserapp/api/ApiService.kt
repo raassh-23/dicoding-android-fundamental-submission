@@ -1,8 +1,5 @@
 package com.raassh.dicodinggithubuserapp.api
 
-import com.raassh.dicodinggithubuserapp.api.ListUsersResponse
-import com.raassh.dicodinggithubuserapp.api.SearchUserResponse
-import com.raassh.dicodinggithubuserapp.api.UserDetailResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Headers
@@ -26,11 +23,11 @@ interface ApiService {
     @Headers("Authorization: token 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")
     fun getUserFollowers(
         @Path("username") username: String
-    ): Call<ListUsersResponse>
+    ): Call<List<ListUsersResponse>>
 
     @GET("users/{username}/following")
     @Headers("Authorization: token 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")
     fun getUserFollowing(
         @Path("username") username: String
-    ): Call<ListUsersResponse>
+    ): Call<List<ListUsersResponse>>
 }
