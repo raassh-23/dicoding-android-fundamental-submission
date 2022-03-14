@@ -1,4 +1,4 @@
-package com.raassh.dicodinggithubuserapp
+package com.raassh.dicodinggithubuserapp.misc
 
 open class Event<out T>(private val content: T) {
 

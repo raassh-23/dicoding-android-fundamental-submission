@@ -1,6 +1,7 @@
-package com.raassh.dicodinggithubuserapp
+package com.raassh.dicodinggithubuserapp.activity
 
 import android.app.SearchManager
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -11,8 +12,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.getSystemService
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.snackbar.Snackbar
+import com.raassh.dicodinggithubuserapp.*
+import com.raassh.dicodinggithubuserapp.adapter.ListUserAdapter
+import com.raassh.dicodinggithubuserapp.api.ListUsersResponseItem
 import com.raassh.dicodinggithubuserapp.databinding.ActivityMainBinding
+import com.raassh.dicodinggithubuserapp.misc.UserItem
+import com.raassh.dicodinggithubuserapp.viewmodel.MainViewModel
 
 class MainActivity : AppCompatActivity() {
     /*
@@ -97,24 +102,26 @@ class MainActivity : AppCompatActivity() {
         val users = ArrayList<UserItem>()
 
         for (user in listUsers) {
-            users.add(UserItem(
-                user.login,
-                user.avatarUrl
-            ))
+            users.add(
+                UserItem(
+                    user.login,
+                    user.avatarUrl
+                )
+            )
         }
 
         val listUserAdapter = ListUserAdapter(users)
         binding.rvUsers.adapter = listUserAdapter
 
-//        listUserAdapter.setOnItemClickCallback(object : ListUserAdapter.OnItemClickCallback {
-//            override fun onItemClicked(user: UserItem) {
-//                val detailsIntent = Intent(this@MainActivity, UserDetailActivity::class.java)
-//                    .apply {
-//                        putExtra(UserDetailActivity.EXTRA_USER, user)
-//                    }
-//                startActivity(detailsIntent)
-//            }
-//        })
+        listUserAdapter.setOnItemClickCallback(object : ListUserAdapter.OnItemClickCallback {
+            override fun onItemClicked(user: UserItem) {
+                val detailsIntent = Intent(this@MainActivity, UserDetailActivity::class.java)
+                    .apply {
+                        putExtra(UserDetailActivity.EXTRA_USER, user)
+                    }
+                startActivity(detailsIntent)
+            }
+        })
     }
 
     private fun showLoading(isLoading: Boolean) {

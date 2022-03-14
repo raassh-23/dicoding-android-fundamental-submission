@@ -1,5 +1,8 @@
-package com.raassh.dicodinggithubuserapp
+package com.raassh.dicodinggithubuserapp.api
 
+import com.raassh.dicodinggithubuserapp.api.ListUsersResponse
+import com.raassh.dicodinggithubuserapp.api.SearchUserResponse
+import com.raassh.dicodinggithubuserapp.api.UserDetailResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Headers

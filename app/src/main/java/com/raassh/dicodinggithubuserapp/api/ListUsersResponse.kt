@@ -1,4 +1,4 @@
-package com.raassh.dicodinggithubuserapp
+package com.raassh.dicodinggithubuserapp.api
 
 import com.google.gson.annotations.SerializedName
 

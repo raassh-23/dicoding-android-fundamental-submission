@@ -1,10 +1,10 @@
-package com.raassh.dicodinggithubuserapp
+package com.raassh.dicodinggithubuserapp.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.raassh.dicodinggithubuserapp.misc.UserItem
 import com.raassh.dicodinggithubuserapp.databinding.ItemUserDetailBinding
 
 class ListUserAdapter(private val listUser: ArrayList<UserItem>) :

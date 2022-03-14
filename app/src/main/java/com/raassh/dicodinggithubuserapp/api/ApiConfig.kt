@@ -1,5 +1,6 @@
-package com.raassh.dicodinggithubuserapp
+package com.raassh.dicodinggithubuserapp.api
 
+import com.raassh.dicodinggithubuserapp.BuildConfig
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit

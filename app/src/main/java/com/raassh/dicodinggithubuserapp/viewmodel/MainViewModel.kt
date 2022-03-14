@@ -1,10 +1,12 @@
-package com.raassh.dicodinggithubuserapp
+package com.raassh.dicodinggithubuserapp.viewmodel
 
-import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.raassh.dicodinggithubuserapp.misc.Event
+import com.raassh.dicodinggithubuserapp.api.ListUsersResponseItem
+import com.raassh.dicodinggithubuserapp.api.SearchUserResponse
+import com.raassh.dicodinggithubuserapp.api.ApiConfig
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

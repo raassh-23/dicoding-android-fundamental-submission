@@ -1,4 +1,4 @@
-package com.raassh.dicodinggithubuserapp
+package com.raassh.dicodinggithubuserapp.misc
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
