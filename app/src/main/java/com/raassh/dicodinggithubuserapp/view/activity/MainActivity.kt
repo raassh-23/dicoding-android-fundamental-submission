@@ -3,11 +3,8 @@ package com.raassh.dicodinggithubuserapp.view.activity
 import android.app.SearchManager
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
@@ -15,7 +12,7 @@ import androidx.core.content.getSystemService
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
-import com.raassh.dicodinggithubuserapp.*
+import com.raassh.dicodinggithubuserapp.R
 import com.raassh.dicodinggithubuserapp.adapter.ListUserAdapter
 import com.raassh.dicodinggithubuserapp.api.ListUsersResponse
 import com.raassh.dicodinggithubuserapp.databinding.ActivityMainBinding
@@ -65,7 +62,12 @@ class MainActivity : AppCompatActivity() {
             rvUsers.apply {
                 setHasFixedSize(true)
                 this.layoutManager = layoutManager
-                addItemDecoration(DividerItemDecoration(this@MainActivity, layoutManager.orientation))
+                addItemDecoration(
+                    DividerItemDecoration(
+                        this@MainActivity,
+                        layoutManager.orientation
+                    )
+                )
             }
 
             btnRetry.setOnClickListener { mainViewModel.searchUsers() }

@@ -1,20 +1,18 @@
 package com.raassh.dicodinggithubuserapp.view.activity
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.annotation.StringRes
+import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
-import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayoutMediator
 import com.raassh.dicodinggithubuserapp.R
 import com.raassh.dicodinggithubuserapp.adapter.FollowSectionsPagerAdapter
 import com.raassh.dicodinggithubuserapp.api.UserDetailResponse
-import com.raassh.dicodinggithubuserapp.misc.UserItem
 import com.raassh.dicodinggithubuserapp.databinding.ActivityUserDetailBinding
+import com.raassh.dicodinggithubuserapp.misc.UserItem
 import com.raassh.dicodinggithubuserapp.misc.visibility
 import com.raassh.dicodinggithubuserapp.viewmodel.UserDetailViewModel
 
@@ -120,6 +118,7 @@ class UserDetailActivity : AppCompatActivity() {
 
     companion object {
         const val EXTRA_USER = "extra_user"
+
         @StringRes
         private val TAB_TITLES = intArrayOf(
             R.string.follow_tab_1,

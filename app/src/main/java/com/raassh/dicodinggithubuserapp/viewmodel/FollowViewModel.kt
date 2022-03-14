@@ -4,7 +4,8 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.raassh.dicodinggithubuserapp.api.*
+import com.raassh.dicodinggithubuserapp.api.ApiConfig
+import com.raassh.dicodinggithubuserapp.api.ListUsersResponse
 import com.raassh.dicodinggithubuserapp.misc.Event
 import retrofit2.Call
 import retrofit2.Callback
@@ -30,29 +31,29 @@ class FollowViewModel : ViewModel() {
                 _listUsers.value = response.body()
             } else {
                 _error.value = Event(task)
-                Log.e(TAG, "onFailure: ${response.message()}" )
+                Log.e(TAG, "onFailure: ${response.message()}")
             }
         }
 
         override fun onFailure(call: Call<List<ListUsersResponse>>, t: Throwable) {
             _isLoading.value = false
             _error.value = Event(task)
-            Log.e(TAG, "onFailure: ${t.message}" )
+            Log.e(TAG, "onFailure: ${t.message}")
         }
     }
 
     fun getFollowers(username: String) {
         _isLoading.value = true
 
-        val client = ApiConfig.getApiService().getUserFollowers(username)
-        client.enqueue(createResponseCallback("Followers"))
+        ApiConfig.getApiService().getUserFollowers(username)
+            .enqueue(createResponseCallback("Followers"))
     }
 
     fun getFollowing(username: String) {
         _isLoading.value = true
 
-        val client = ApiConfig.getApiService().getUserFollowing(username)
-        client.enqueue(createResponseCallback("Following"))
+        ApiConfig.getApiService().getUserFollowing(username)
+            .enqueue(createResponseCallback("Following"))
     }
 
     companion object {

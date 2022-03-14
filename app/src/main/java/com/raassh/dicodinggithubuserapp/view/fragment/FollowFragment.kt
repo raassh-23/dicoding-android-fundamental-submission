@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -14,7 +13,6 @@ import com.raassh.dicodinggithubuserapp.R
 import com.raassh.dicodinggithubuserapp.adapter.ListUserAdapter
 import com.raassh.dicodinggithubuserapp.api.ListUsersResponse
 import com.raassh.dicodinggithubuserapp.databinding.FragmentFollowBinding
-import com.raassh.dicodinggithubuserapp.misc.UserItem
 import com.raassh.dicodinggithubuserapp.misc.createUserArrayList
 import com.raassh.dicodinggithubuserapp.misc.visibility
 import com.raassh.dicodinggithubuserapp.viewmodel.FollowViewModel
@@ -45,16 +43,23 @@ class FollowFragment : Fragment() {
             rvUsers.apply {
                 setHasFixedSize(true)
                 this.layoutManager = layoutManager
-                addItemDecoration(DividerItemDecoration(requireActivity(), layoutManager.orientation))
+                addItemDecoration(
+                    DividerItemDecoration(
+                        requireActivity(),
+                        layoutManager.orientation
+                    )
+                )
             }
 
             btnRetry.setOnClickListener { loadData(sectionIndex, username) }
 
-            emptyText.text = getString(R.string.empty_text, if (sectionIndex == 0) {
-                "Followers"
-            } else {
-                "Following"
-            })
+            emptyText.text = getString(
+                R.string.empty_text, if (sectionIndex == 0) {
+                    "Followers"
+                } else {
+                    "Following"
+                }
+            )
         }
 
         followViewModel.apply {
@@ -99,7 +104,7 @@ class FollowFragment : Fragment() {
             progressBar.visibility = visibility(isLoading)
             rvUsers.visibility = visibility(!isLoading)
 
-            if(isLoading) {
+            if (isLoading) {
                 btnRetry.visibility = visibility(false)
             }
         }

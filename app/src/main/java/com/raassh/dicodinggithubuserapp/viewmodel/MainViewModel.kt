@@ -4,10 +4,10 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.raassh.dicodinggithubuserapp.misc.Event
+import com.raassh.dicodinggithubuserapp.api.ApiConfig
 import com.raassh.dicodinggithubuserapp.api.ListUsersResponse
 import com.raassh.dicodinggithubuserapp.api.SearchUserResponse
-import com.raassh.dicodinggithubuserapp.api.ApiConfig
+import com.raassh.dicodinggithubuserapp.misc.Event
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -39,28 +39,28 @@ class MainViewModel : ViewModel() {
         lastQuery = query
         _isLoading.value = true
 
-        val client = ApiConfig.getApiService().getSearchedUsers(query)
-        client.enqueue(object : Callback<SearchUserResponse> {
-            override fun onResponse(
-                call: Call<SearchUserResponse>,
-                response: Response<SearchUserResponse>,
-            ) {
-                _isLoading.value = false
-                if (response.isSuccessful) {
-                    _resultCount.value = response.body()?.totalCount
-                    _listUsers.value = response.body()?.items
-                } else {
-                    _error.value = Event("Search results")
+        ApiConfig.getApiService().getSearchedUsers(query)
+            .enqueue(object : Callback<SearchUserResponse> {
+                override fun onResponse(
+                    call: Call<SearchUserResponse>,
+                    response: Response<SearchUserResponse>,
+                ) {
+                    _isLoading.value = false
+                    if (response.isSuccessful) {
+                        _resultCount.value = response.body()?.totalCount
+                        _listUsers.value = response.body()?.items
+                    } else {
+                        _error.value = Event("Search results")
+                    }
                 }
-            }
 
-            override fun onFailure(call: Call<SearchUserResponse>, t: Throwable) {
-                _isLoading.value = false
-                _error.value = Event("Search results")
-                Log.e(TAG, "onFailure: ${t.message}" )
-            }
+                override fun onFailure(call: Call<SearchUserResponse>, t: Throwable) {
+                    _isLoading.value = false
+                    _error.value = Event("Search results")
+                    Log.e(TAG, "onFailure: ${t.message}")
+                }
 
-        })
+            })
     }
 
     companion object {

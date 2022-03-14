@@ -24,30 +24,30 @@ class UserDetailViewModel : ViewModel() {
     fun getUserDetail(username: String) {
         _isLoading.value = true
 
-        val client = ApiConfig.getApiService().getUserDetail(username)
-        client.enqueue(object : Callback<UserDetailResponse> {
-            override fun onResponse(
-                call: Call<UserDetailResponse>,
-                response: Response<UserDetailResponse>,
-            ) {
-                _isLoading.value = false
-                if (response.isSuccessful) {
-                    _user.value = response.body()
-                } else {
-                    _error.value = Event("User details")
-                    Log.e(TAG, "onFailure: ${response.message()}")
+        ApiConfig.getApiService().getUserDetail(username)
+            .enqueue(object : Callback<UserDetailResponse> {
+                override fun onResponse(
+                    call: Call<UserDetailResponse>,
+                    response: Response<UserDetailResponse>,
+                ) {
+                    _isLoading.value = false
+                    if (response.isSuccessful) {
+                        _user.value = response.body()
+                    } else {
+                        _error.value = Event("User details")
+                        Log.e(TAG, "onFailure: ${response.message()}")
+                    }
                 }
-            }
 
-            override fun onFailure(call: Call<UserDetailResponse>, t: Throwable) {
-                _isLoading.value = false
-                _error.value = Event("User details")
-                Log.e(TAG, "onFailure: ${t.message}")
-            }
+                override fun onFailure(call: Call<UserDetailResponse>, t: Throwable) {
+                    _isLoading.value = false
+                    _error.value = Event("User details")
+                    Log.e(TAG, "onFailure: ${t.message}")
+                }
 
-        })
+            })
     }
-    
+
     companion object {
         private const val TAG = "UserDetailViewModel"
     }
