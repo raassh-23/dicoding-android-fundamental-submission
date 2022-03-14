@@ -1,7 +1,6 @@
 package com.raassh.dicodinggithubuserapp.view.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +8,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
+import com.raassh.dicodinggithubuserapp.R
 import com.raassh.dicodinggithubuserapp.adapter.ListUserAdapter
 import com.raassh.dicodinggithubuserapp.api.ListUsersResponse
 import com.raassh.dicodinggithubuserapp.databinding.FragmentFollowBinding
@@ -33,21 +34,18 @@ class FollowFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val sectionIndex = arguments?.getInt(ARG_SECTION_NUMBER)
+        val sectionIndex = arguments?.getInt(ARG_SECTION_NUMBER) as Int
         val username = arguments?.getString(ARG_USERNAME) as String
+        loadData(sectionIndex, username)
 
-        binding.rvUsers.apply {
-            setHasFixedSize(true)
-            layoutManager = LinearLayoutManager(requireActivity())
+        binding.apply {
+            rvUsers.setHasFixedSize(true)
+            rvUsers.layoutManager = LinearLayoutManager(requireActivity())
+
+            btnRetry.setOnClickListener { loadData(sectionIndex, username) }
         }
 
         followViewModel.apply {
-            if (sectionIndex == 0) {
-                getFollowers(username)
-            } else {
-                getFollowing(username)
-            }
-
             listUsers.observe(requireActivity()) {
                 setUsersData(it)
             }
@@ -56,11 +54,19 @@ class FollowFragment : Fragment() {
                 showLoading(it)
             }
 
-            errorMessage.observe(requireActivity()) {
+            error.observe(requireActivity()) {
                 it.getContentIfNotHandled()?.let { text ->
-                    Toast.makeText(requireActivity(), text, Toast.LENGTH_SHORT).show()
+                    showError(text, sectionIndex, username)
                 }
             }
+        }
+    }
+
+    private fun loadData(sectionIndex: Int, username: String) {
+        if (sectionIndex == 0) {
+            followViewModel.getFollowers(username)
+        } else {
+            followViewModel.getFollowing(username)
         }
     }
 
@@ -84,7 +90,23 @@ class FollowFragment : Fragment() {
         binding.apply {
             progressBar.visibility = visibility(isLoading)
             rvUsers.visibility = visibility(!isLoading)
+
+            if(isLoading) {
+                btnRetry.visibility = visibility(false)
+            }
         }
+    }
+
+    private fun showError(text: String, sectionIndex: Int, username: String) {
+        Snackbar.make(binding.root, getString(R.string.error_message, text), Snackbar.LENGTH_SHORT)
+            .setAction(R.string.try_again) { loadData(sectionIndex, username) }
+            .addCallback(object : Snackbar.Callback() {
+                override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
+                    super.onDismissed(transientBottomBar, event)
+                    binding.btnRetry.visibility = visibility(true)
+                }
+            })
+            .show()
     }
 
     override fun onDestroy() {

@@ -1,5 +1,6 @@
 package com.raassh.dicodinggithubuserapp.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -16,43 +17,45 @@ class FollowViewModel : ViewModel() {
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
-    private val _errorMessage = MutableLiveData<Event<String>>()
-    val errorMessage: LiveData<Event<String>> = _errorMessage
+    private val _error = MutableLiveData<Event<String>>()
+    val error: LiveData<Event<String>> = _error
 
-    private val responseCallback: Callback<List<ListUsersResponse>>
-        get() {
-            return object : Callback<List<ListUsersResponse>> {
-                override fun onResponse(
-                    call: Call<List<ListUsersResponse>>,
-                    response: Response<List<ListUsersResponse>>,
-                ) {
-                    _isLoading.value = false
-                    if (response.isSuccessful) {
-                        _listUsers.value = response.body()
-                    } else {
-                        _errorMessage.value = Event(response.message())
-                    }
-                }
-
-                override fun onFailure(call: Call<List<ListUsersResponse>>, t: Throwable) {
-                    _isLoading.value = false
-                    _errorMessage.value = Event(t.message as String)
-                }
-
+    private fun createResponseCallback(task: String) = object : Callback<List<ListUsersResponse>> {
+        override fun onResponse(
+            call: Call<List<ListUsersResponse>>,
+            response: Response<List<ListUsersResponse>>,
+        ) {
+            _isLoading.value = false
+            if (response.isSuccessful) {
+                _listUsers.value = response.body()
+            } else {
+                _error.value = Event(task)
+                Log.e(TAG, "onFailure: ${response.message()}" )
             }
         }
+
+        override fun onFailure(call: Call<List<ListUsersResponse>>, t: Throwable) {
+            _isLoading.value = false
+            _error.value = Event(task)
+            Log.e(TAG, "onFailure: ${t.message}" )
+        }
+    }
 
     fun getFollowers(username: String) {
         _isLoading.value = true
 
         val client = ApiConfig.getApiService().getUserFollowers(username)
-        client.enqueue(responseCallback)
+        client.enqueue(createResponseCallback("Followers"))
     }
 
     fun getFollowing(username: String) {
         _isLoading.value = true
 
         val client = ApiConfig.getApiService().getUserFollowing(username)
-        client.enqueue(responseCallback)
+        client.enqueue(createResponseCallback("Following"))
+    }
+
+    companion object {
+        private const val TAG = "FollowViewModel"
     }
 }

@@ -3,14 +3,17 @@ package com.raassh.dicodinggithubuserapp.view.activity
 import android.app.SearchManager
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.getSystemService
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import com.raassh.dicodinggithubuserapp.*
 import com.raassh.dicodinggithubuserapp.adapter.ListUserAdapter
 import com.raassh.dicodinggithubuserapp.api.ListUsersResponse
@@ -35,11 +38,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.rvUsers.apply {
-            setHasFixedSize(true)
-            layoutManager = LinearLayoutManager(this@MainActivity)
-        }
-
         mainViewModel.apply {
             listUsers.observe(this@MainActivity) {
                 setUsersData(it)
@@ -53,11 +51,18 @@ class MainActivity : AppCompatActivity() {
                 showLoading(it)
             }
 
-            errorMessage.observe(this@MainActivity) {
+            error.observe(this@MainActivity) {
                 it.getContentIfNotHandled()?.let { text ->
-                    Toast.makeText(this@MainActivity, text, Toast.LENGTH_SHORT).show()
+                    showError(text)
                 }
             }
+        }
+
+        binding.apply {
+            rvUsers.setHasFixedSize(true)
+            rvUsers.layoutManager = LinearLayoutManager(this@MainActivity)
+
+            btnRetry.setOnClickListener { mainViewModel.searchUsers() }
         }
     }
 
@@ -130,6 +135,25 @@ class MainActivity : AppCompatActivity() {
         binding.apply {
             progressBar.visibility = visibility(isLoading)
             listUsers.visibility = visibility(!isLoading)
+
+            if (isLoading) {
+                tvResultCount.text = ""
+                btnRetry.visibility = visibility(false)
+                rvUsers.adapter = null
+            }
         }
     }
+
+    private fun showError(text: String) {
+        Snackbar.make(binding.root, getString(R.string.error_message, text), Snackbar.LENGTH_SHORT)
+            .setAction(R.string.try_again) { mainViewModel.searchUsers() }
+            .addCallback(object : Snackbar.Callback() {
+                override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
+                    super.onDismissed(transientBottomBar, event)
+                    binding.btnRetry.visibility = visibility(true)
+                }
+            })
+            .show()
+    }
+
 }

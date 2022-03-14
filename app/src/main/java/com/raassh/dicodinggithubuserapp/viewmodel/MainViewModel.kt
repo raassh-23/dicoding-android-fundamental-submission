@@ -1,5 +1,6 @@
 package com.raassh.dicodinggithubuserapp.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -21,14 +22,21 @@ class MainViewModel : ViewModel() {
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
-    private val _errorMessage = MutableLiveData<Event<String>>()
-    val errorMessage: LiveData<Event<String>> = _errorMessage
+    private val _error = MutableLiveData<Event<String>>()
+    val error: LiveData<Event<String>> = _error
+
+    private var lastQuery: String = emptyQuery
 
     init {
-        searchUsers(emptyQuery) // search empty query to show all user
+        searchUsers()
+    }
+
+    fun searchUsers() {
+        searchUsers(lastQuery)
     }
 
     fun searchUsers(query: String) {
+        lastQuery = query
         _isLoading.value = true
 
         val client = ApiConfig.getApiService().getSearchedUsers(query)
@@ -42,19 +50,21 @@ class MainViewModel : ViewModel() {
                     _resultCount.value = response.body()?.totalCount
                     _listUsers.value = response.body()?.items
                 } else {
-                    _errorMessage.value = Event(response.message())
+                    _error.value = Event("Search results")
                 }
             }
 
             override fun onFailure(call: Call<SearchUserResponse>, t: Throwable) {
                 _isLoading.value = false
-                _errorMessage.value = Event(t.message as String)
+                _error.value = Event("Search results")
+                Log.e(TAG, "onFailure: ${t.message}" )
             }
 
         })
     }
 
     companion object {
+        private const val TAG = "MainViewModel"
         const val emptyQuery = "\"\""
     }
 }

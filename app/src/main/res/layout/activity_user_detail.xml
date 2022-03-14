@@ -190,15 +190,32 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_details_follower_count"
+        app:layout_constraintBottom_toTopOf="@+id/follow_tabs"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/tv_details_title"
+        app:layout_constraintTop_toBottomOf="@+id/tv_details_title"
         tools:visibility="visible" />
 
-    <androidx.constraintlayout.widget.Group
-        android:id="@+id/details"
+    <Button
+        android:id="@+id/btn_retry"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:constraint_referenced_ids="details_avatar, tv_details_name, tv_details_username, tv_details_company, tv_details_location, tv_details_repo, tv_details_repo_count, tv_details_following, tv_details_following_count, tv_details_follower, tv_details_follower_count, btn_share" />
+        android:text="@string/retry"
+        app:icon="@drawable/ic_baseline_refresh_24"
+        app:layout_constraintBottom_toTopOf="@+id/follow_tabs"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_details_title" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/details_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="details_avatar, tv_details_name, tv_details_username, tv_details_company, tv_details_location, tv_details_repo_count, tv_details_following_count, tv_details_follower_count" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/details_static"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="tv_details_repo, tv_details_following, tv_details_follower, btn_share" />
 </androidx.constraintlayout.widget.ConstraintLayout>

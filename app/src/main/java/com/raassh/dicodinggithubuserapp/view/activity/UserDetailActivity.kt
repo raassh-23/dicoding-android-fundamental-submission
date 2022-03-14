@@ -7,6 +7,8 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.annotation.StringRes
 import com.bumptech.glide.Glide
+import com.google.android.material.snackbar.BaseTransientBottomBar
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayoutMediator
 import com.raassh.dicodinggithubuserapp.R
 import com.raassh.dicodinggithubuserapp.adapter.FollowSectionsPagerAdapter
@@ -37,9 +39,9 @@ class UserDetailActivity : AppCompatActivity() {
                 showLoading(it)
             }
 
-            errorMessage.observe(this@UserDetailActivity) {
+            error.observe(this@UserDetailActivity) {
                 it.getContentIfNotHandled()?.let { text ->
-                    Toast.makeText(this@UserDetailActivity, text, Toast.LENGTH_SHORT).show()
+                    showError(text, user.username)
                 }
             }
         }
@@ -56,6 +58,8 @@ class UserDetailActivity : AppCompatActivity() {
                 val shareIntent = Intent.createChooser(sendIntent, null)
                 startActivity(shareIntent)
             }
+
+            btnRetry.setOnClickListener { userDetailViewModel.getUserDetail(user.username) }
         }
 
         val viewPager = binding.followViewPager.apply {
@@ -67,6 +71,18 @@ class UserDetailActivity : AppCompatActivity() {
             tab.text = getString(TAB_TITLES[position])
         }.attach()
 
+    }
+
+    private fun showError(text: String, username: String) {
+        Snackbar.make(binding.root, getString(R.string.error_message, text), Snackbar.LENGTH_SHORT)
+            .setAction(R.string.try_again) { userDetailViewModel.getUserDetail(username) }
+            .addCallback(object : Snackbar.Callback() {
+                override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
+                    super.onDismissed(transientBottomBar, event)
+                    binding.btnRetry.visibility = visibility(true)
+                }
+            })
+            .show()
     }
 
     private fun showDetails(user: UserDetailResponse) {
@@ -82,6 +98,8 @@ class UserDetailActivity : AppCompatActivity() {
                 tvDetailsRepoCount.text = publicRepos.toString()
                 tvDetailsFollowerCount.text = followers.toString()
                 tvDetailsFollowingCount.text = following.toString()
+
+                detailsStatic.visibility = visibility(true)
             }
         }
     }
@@ -89,7 +107,12 @@ class UserDetailActivity : AppCompatActivity() {
     private fun showLoading(isLoading: Boolean) {
         binding.apply {
             progressBar.visibility = visibility(isLoading)
-            details.visibility = visibility(!isLoading)
+            detailsContent.visibility = visibility(!isLoading)
+
+            if (isLoading) {
+                btnRetry.visibility = visibility(false)
+                detailsStatic.visibility = visibility(false)
+            }
         }
     }
 
