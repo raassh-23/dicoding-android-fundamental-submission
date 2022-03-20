@@ -1,12 +1,11 @@
 package com.raassh.dicodinggithubuserapp.data
 
 import android.app.Application
-import androidx.lifecycle.LiveData
 import com.raassh.dicodinggithubuserapp.data.db.FavoriteUserDao
 import com.raassh.dicodinggithubuserapp.data.db.FavoriteUserDatabase
 import java.util.concurrent.Executors
 
-class UserRepository private constructor(application: Application) {
+class FavoriteUserRepository private constructor(application: Application) {
     private val favoriteUserDao: FavoriteUserDao
     private val executorService = Executors.newSingleThreadExecutor()
 
@@ -29,11 +28,11 @@ class UserRepository private constructor(application: Application) {
 
     companion object {
         @Volatile
-        private var INSTANCE: UserRepository? = null
+        private var INSTANCE: FavoriteUserRepository? = null
 
         @JvmStatic
-        fun getInstance(application: Application) = INSTANCE ?: synchronized(UserRepository::class.java) {
-            UserRepository(application)
+        fun getInstance(application: Application) = INSTANCE ?: synchronized(FavoriteUserRepository::class.java) {
+            FavoriteUserRepository(application)
         }.also { INSTANCE = it }
     }
 }

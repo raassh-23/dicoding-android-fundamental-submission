@@ -7,7 +7,6 @@
     <string name="repository">Repositories:</string>
     <string name="followers">Followers:</string>
     <string name="following">Following:</string>
-    <string name="back">Back</string>
     <string name="share">Share</string>
     <string name="result_count">Result count: %1$d</string>
     <string name="search">Search</string>
@@ -20,21 +19,10 @@
     <string name="user_avatar">User avatar</string>
     <string name="empty_text">%1$s list is empty</string>
     <string name="favorite">Favorite</string>
-    <string name="setting">Setting</string>
     <string name="dark_mode">Dark Mode</string>
-    <!-- Preference Titles -->
-    <string name="messages_header">Messages</string>
-    <string name="sync_header">Sync</string>
-
-    <!-- Messages Preferences -->
-    <string name="signature_title">Your signature</string>
-    <string name="reply_title">Default reply action</string>
-
-    <!-- Sync Preferences -->
-    <string name="sync_title">Sync email periodically</string>
-    <string name="attachment_title">Download incoming attachments</string>
-    <string name="attachment_summary_on">Automatically download attachments for incoming emails
-    </string>
-    <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <string name="add_favorite">Add Favorite</string>
+    <string name="favorite_users">Favorite Users</string>
+    <string name="remove_favorite">Remove Favorite</string>
+    <string name="added_to_favorite">User added to favorite list</string>
+    <string name="removed_from_favorite">User removed from favorite list</string>
 </resources>

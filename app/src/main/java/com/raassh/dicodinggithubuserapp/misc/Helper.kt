@@ -1,9 +1,7 @@
 package com.raassh.dicodinggithubuserapp.misc
 
-import android.app.Application
 import android.view.View
 import com.raassh.dicodinggithubuserapp.data.UserItem
-import com.raassh.dicodinggithubuserapp.data.UserRepository
 import com.raassh.dicodinggithubuserapp.data.api.ListUsersResponse
 
 fun visibility(visible: Boolean) = if (visible) {

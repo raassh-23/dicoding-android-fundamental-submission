@@ -6,8 +6,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.raassh.dicodinggithubuserapp.data.FavoriteUserRepository
 import com.raassh.dicodinggithubuserapp.data.UserItem
-import com.raassh.dicodinggithubuserapp.data.UserRepository
 import com.raassh.dicodinggithubuserapp.data.api.ApiConfig
 import com.raassh.dicodinggithubuserapp.data.api.UserDetailResponse
 import com.raassh.dicodinggithubuserapp.misc.Event
@@ -16,7 +16,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class UserDetailViewModel(private val username: String, application: Application) : ViewModel() {
-    private val userRepository = UserRepository.getInstance(application)
+    private val userRepository = FavoriteUserRepository.getInstance(application)
 
     private val _user = MutableLiveData<UserDetailResponse>()
     val user: LiveData<UserDetailResponse> = _user

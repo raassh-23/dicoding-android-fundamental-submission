@@ -2,8 +2,8 @@ package com.raassh.dicodinggithubuserapp.view.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
@@ -12,9 +12,9 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayoutMediator
 import com.raassh.dicodinggithubuserapp.R
 import com.raassh.dicodinggithubuserapp.adapter.FollowSectionsPagerAdapter
+import com.raassh.dicodinggithubuserapp.data.UserItem
 import com.raassh.dicodinggithubuserapp.data.api.UserDetailResponse
 import com.raassh.dicodinggithubuserapp.databinding.ActivityUserDetailBinding
-import com.raassh.dicodinggithubuserapp.data.UserItem
 import com.raassh.dicodinggithubuserapp.misc.visibility
 import com.raassh.dicodinggithubuserapp.viewmodel.UserDetailViewModel
 
@@ -57,8 +57,10 @@ class UserDetailActivity : AppCompatActivity() {
             }
 
             isFavorite.observe(this@UserDetailActivity) {
-                binding.btnFavorite.visibility = visibility(!it)
-                binding.btnUnfavorite.visibility = visibility(it)
+                binding.apply {
+                    btnFavorite.visibility = visibility(!it)
+                    btnUnfavorite.visibility = visibility(it)
+                }
             }
         }
 
@@ -76,9 +78,11 @@ class UserDetailActivity : AppCompatActivity() {
             }
             btnFavorite.setOnClickListener {
                 userDetailViewModel.setFavorite(user, true)
+                Toast.makeText(this@UserDetailActivity, getString(R.string.added_to_favorite), Toast.LENGTH_SHORT).show()
             }
             btnUnfavorite.setOnClickListener {
                 userDetailViewModel.setFavorite(user, false)
+                Toast.makeText(this@UserDetailActivity, getString(R.string.removed_from_favorite), Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -97,12 +101,12 @@ class UserDetailActivity : AppCompatActivity() {
 
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId) {
+        return when(item.itemId) {
             android.R.id.home -> {
                 finish()
-                return true
+                true
             }
-            else -> return super.onOptionsItemSelected(item)
+            else -> super.onOptionsItemSelected(item)
         }
     }
 

@@ -4,9 +4,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.raassh.dicodinggithubuserapp.databinding.ItemUserDetailBinding
 import com.raassh.dicodinggithubuserapp.data.UserItem
-import com.raassh.dicodinggithubuserapp.data.UserRepository
+import com.raassh.dicodinggithubuserapp.databinding.ItemUserDetailBinding
 
 class ListUserAdapter(private val listUser: ArrayList<UserItem>) :
     RecyclerView.Adapter<ListUserAdapter.ViewHolder>() {
