@@ -7,4 +7,17 @@
         android:title="@string/search"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:showAsAction="collapseActionView|always" />
+
+    <item
+        android:id="@+id/favorite"
+        android:icon="@drawable/ic_baseline_favorite_24"
+        android:title="@string/favorite"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/dark_mode"
+        android:icon="@drawable/ic_outline_dark_mode_24"
+        android:title="@string/dark_mode"
+        android:checkable="true"
+        app:showAsAction="ifRoom" />
 </menu>

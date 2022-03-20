@@ -12,6 +12,7 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+        <item name="tabStyle">@style/AppTheme.TabLayout</item>
     </style>
 
     <style name="ContentText">
@@ -40,5 +41,18 @@
 
     <style name="ContentText.Small">
         <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="AppTabTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="textAllCaps">true</item>
+    </style>
+
+    <style name="AppTheme.TabLayout" parent="Widget.Design.TabLayout">
+        <item name="tabSelectedTextColor">@android:color/black</item>
+        <item name="tabTextColor">@android:color/black</item>
+        <item name="tabIndicatorColor">@color/yellow_200</item>
+        <item name="tabIndicatorHeight">4dp</item>
     </style>
 </resources>

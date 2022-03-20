@@ -1,18 +1,18 @@
 package com.raassh.dicodinggithubuserapp.viewmodel
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import com.raassh.dicodinggithubuserapp.api.ApiConfig
 import com.raassh.dicodinggithubuserapp.api.ListUsersResponse
 import com.raassh.dicodinggithubuserapp.api.SearchUserResponse
 import com.raassh.dicodinggithubuserapp.misc.Event
+import com.raassh.dicodinggithubuserapp.misc.SettingPreferences
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MainViewModel : ViewModel() {
+class MainViewModel(private val pref: SettingPreferences) : ViewModel() {
     private val _resultCount = MutableLiveData<Int>()
     val resultCount: LiveData<Int> = _resultCount
 
@@ -69,6 +69,23 @@ class MainViewModel : ViewModel() {
                 }
 
             })
+    }
+
+    fun getThemeSettings(): LiveData<Boolean> {
+        return pref.getThemeSetting().asLiveData()
+    }
+
+    fun saveThemeSetting(isDarkModeActive: Boolean) {
+        viewModelScope.launch {
+            pref.saveThemeSetting(isDarkModeActive)
+        }
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    class Factory(private val pref: SettingPreferences) : ViewModelProvider.Factory {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+            return MainViewModel(pref) as T
+        }
     }
 
     companion object {

@@ -1,14 +1,19 @@
 package com.raassh.dicodinggithubuserapp.view.activity
 
 import android.app.SearchManager
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.getSystemService
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
@@ -16,10 +21,13 @@ import com.raassh.dicodinggithubuserapp.R
 import com.raassh.dicodinggithubuserapp.adapter.ListUserAdapter
 import com.raassh.dicodinggithubuserapp.api.ListUsersResponse
 import com.raassh.dicodinggithubuserapp.databinding.ActivityMainBinding
+import com.raassh.dicodinggithubuserapp.misc.SettingPreferences
 import com.raassh.dicodinggithubuserapp.misc.UserItem
 import com.raassh.dicodinggithubuserapp.misc.createUserArrayList
 import com.raassh.dicodinggithubuserapp.misc.visibility
 import com.raassh.dicodinggithubuserapp.viewmodel.MainViewModel
+
+private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
 class MainActivity : AppCompatActivity() {
     /*
@@ -30,7 +38,9 @@ class MainActivity : AppCompatActivity() {
     * karena itu, saya tidak melakukan perubahan apa-apa untuk ViewBinding disini..
     * */
     private lateinit var binding: ActivityMainBinding
-    private val mainViewModel by viewModels<MainViewModel>()
+    private val mainViewModel by viewModels<MainViewModel> {
+        MainViewModel.Factory(SettingPreferences.getInstance(dataStore))
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,6 +86,8 @@ class MainActivity : AppCompatActivity() {
 
             btnRetry.setOnClickListener { mainViewModel.searchUsers() }
         }
+
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -83,8 +95,8 @@ class MainActivity : AppCompatActivity() {
         inflater.inflate(R.menu.option_menu, menu)
 
         val searchManager = getSystemService<SearchManager>()
-        val menuItem = menu.findItem(R.id.search)
-        val searchView = menuItem.actionView as SearchView
+        val searchItem = menu.findItem(R.id.search)
+        val searchView = searchItem.actionView as SearchView
 
         searchView.setSearchableInfo(searchManager?.getSearchableInfo(componentName))
         searchView.queryHint = getString(R.string.search_hint)
@@ -101,7 +113,7 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-        menuItem.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
+        searchItem.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
             override fun onMenuItemActionExpand(item: MenuItem?): Boolean {
                 return true
             }
@@ -114,7 +126,32 @@ class MainActivity : AppCompatActivity() {
 
         })
 
+        val menuDarkMode = menu.findItem(R.id.dark_mode)
+
+        mainViewModel.getThemeSettings().observe(this@MainActivity) {
+            if (it) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                menuDarkMode.isChecked = true
+                menuDarkMode.setIcon(R.drawable.ic_baseline_dark_mode_24)
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                menuDarkMode.isChecked = false
+                menuDarkMode.setIcon(R.drawable.ic_outline_dark_mode_24)
+            }
+        }
+
         return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            R.id.dark_mode -> {
+                mainViewModel.saveThemeSetting(!item.isChecked)
+                return true
+            }
+
+            else -> return super.onOptionsItemSelected(item)
+        }
     }
 
     private fun setUsersData(listUsers: List<ListUsersResponse>) {
