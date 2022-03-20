@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.raassh.dicodinggithubuserapp.BuildConfig
 import com.raassh.dicodinggithubuserapp.api.ApiConfig
 import com.raassh.dicodinggithubuserapp.api.UserDetailResponse
 import com.raassh.dicodinggithubuserapp.misc.Event
@@ -57,8 +58,8 @@ class UserDetailViewModel(private val username: String) : ViewModel() {
                     _error.value = Event("User details")
                     Log.e(TAG, "onFailure: ${t.message}")
                 }
-
             })
+
     }
 
     companion object {

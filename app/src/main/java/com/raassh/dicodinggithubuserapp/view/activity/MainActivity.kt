@@ -124,10 +124,11 @@ class MainActivity : AppCompatActivity() {
             rvUsers.adapter = ListUserAdapter(users).apply {
                 setOnItemClickCallback(object : ListUserAdapter.OnItemClickCallback {
                     override fun onItemClicked(user: UserItem) {
-                        val detailsIntent = Intent(this@MainActivity, UserDetailActivity::class.java)
-                            .apply {
-                                putExtra(UserDetailActivity.EXTRA_USER, user)
-                            }
+                        val detailsIntent =
+                            Intent(this@MainActivity, UserDetailActivity::class.java)
+                                .apply {
+                                    putExtra(UserDetailActivity.EXTRA_USER, user)
+                                }
                         startActivity(detailsIntent)
                     }
                 })

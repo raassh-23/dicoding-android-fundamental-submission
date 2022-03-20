@@ -19,7 +19,7 @@ class ListUserAdapter(private val listUser: ArrayList<UserItem>) :
         this.onItemClickCallback = onItemClickCallback
     }
 
-    class ViewHolder(val binding: ItemUserDetailBinding) : RecyclerView.ViewHolder(binding.root)
+    inner class ViewHolder(val binding: ItemUserDetailBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding =

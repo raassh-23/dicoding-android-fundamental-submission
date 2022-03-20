@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayoutMediator
+import com.raassh.dicodinggithubuserapp.BuildConfig
 import com.raassh.dicodinggithubuserapp.R
 import com.raassh.dicodinggithubuserapp.adapter.FollowSectionsPagerAdapter
 import com.raassh.dicodinggithubuserapp.api.UserDetailResponse
@@ -105,7 +106,6 @@ class UserDetailActivity : AppCompatActivity() {
                 tvDetailsRepoCount.text = publicRepos.toString()
                 tvDetailsFollowerCount.text = followers.toString()
                 tvDetailsFollowingCount.text = following.toString()
-
                 detailsStatic.visibility = visibility(true)
             }
         }

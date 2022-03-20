@@ -1,5 +1,6 @@
 package com.raassh.dicodinggithubuserapp.api
 
+import android.util.Log
 import com.raassh.dicodinggithubuserapp.BuildConfig
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -19,6 +20,13 @@ class ApiConfig {
 
             val client = OkHttpClient.Builder()
                 .addInterceptor(loggingInterceptor)
+                .addInterceptor {
+                    val req = it.request().newBuilder()
+                        .addHeader("Authorization", BuildConfig.GITHUB_TOKEN)
+                        .build()
+
+                    it.proceed(req)
+                }
                 .build()
 
             val retrofit = Retrofit.Builder()
