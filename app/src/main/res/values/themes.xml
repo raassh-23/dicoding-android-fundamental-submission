@@ -55,4 +55,9 @@
         <item name="tabIndicatorColor">@color/yellow_500</item>
         <item name="tabIndicatorHeight">4dp</item>
     </style>
+
+    <style name="imgButton" parent="Widget.AppCompat.ImageButton">
+        <item name="tint">@color/white</item>
+        <item name="backgroundTint">@color/green_500</item>
+    </style>
 </resources>

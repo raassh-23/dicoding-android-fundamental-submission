@@ -1,6 +1,5 @@
-package com.raassh.dicodinggithubuserapp.api
+package com.raassh.dicodinggithubuserapp.data.api
 
-import android.util.Log
 import com.raassh.dicodinggithubuserapp.BuildConfig
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

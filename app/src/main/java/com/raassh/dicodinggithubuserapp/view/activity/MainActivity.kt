@@ -19,10 +19,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.raassh.dicodinggithubuserapp.R
 import com.raassh.dicodinggithubuserapp.adapter.ListUserAdapter
-import com.raassh.dicodinggithubuserapp.api.ListUsersResponse
+import com.raassh.dicodinggithubuserapp.data.api.ListUsersResponse
 import com.raassh.dicodinggithubuserapp.databinding.ActivityMainBinding
 import com.raassh.dicodinggithubuserapp.misc.SettingPreferences
-import com.raassh.dicodinggithubuserapp.misc.UserItem
+import com.raassh.dicodinggithubuserapp.data.UserItem
 import com.raassh.dicodinggithubuserapp.misc.createUserArrayList
 import com.raassh.dicodinggithubuserapp.misc.visibility
 import com.raassh.dicodinggithubuserapp.viewmodel.MainViewModel

@@ -157,36 +157,50 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginBottom="16dp"
-            app:layout_constraintBottom_toTopOf="@+id/btn_back"
+            app:layout_constraintBottom_toTopOf="@+id/btn_favorite"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHeight_min="220dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/follow_tabs" />
 
-        <Button
-            android:id="@+id/btn_back"
+        <ImageButton
+            android:id="@+id/btn_favorite"
+            style="@style/imgButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
-            android:text="@string/back"
-            app:icon="@drawable/ic_baseline_arrow_back_24"
+            android:contentDescription="@string/add_favorite"
+            android:src="@drawable/ic_baseline_favorite_border_24"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/guideline4"
-            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintHorizontal_bias="0.95"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <Button
-            android:id="@+id/btn_share"
+        <ImageButton
+            android:id="@+id/btn_unfavorite"
+            style="@style/imgButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:layout_marginBottom="16dp"
-            android:text="@string/share"
-            app:icon="@drawable/ic_baseline_share_24"
+            android:contentDescription="@string/add_favorite"
+            android:src="@drawable/ic_baseline_favorite_24"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/guideline4"
+            app:layout_constraintHorizontal_bias="0.95"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <ImageButton
+            android:id="@+id/btn_share"
+            style="@style/imgButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:contentDescription="@string/share"
+            android:src="@drawable/ic_baseline_share_24"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="0.05"
             app:layout_constraintStart_toStartOf="@+id/guideline4" />
 
         <ProgressBar
@@ -223,6 +237,6 @@
             android:id="@+id/details_static"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:constraint_referenced_ids="details_avatar, tv_details_repo, tv_details_following, tv_details_follower, btn_share" />
+            app:constraint_referenced_ids="details_avatar, tv_details_repo, tv_details_following, tv_details_follower, btn_share, btn_favorite" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

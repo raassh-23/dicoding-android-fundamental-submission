@@ -5,8 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.raassh.dicodinggithubuserapp.api.ApiConfig
-import com.raassh.dicodinggithubuserapp.api.ListUsersResponse
+import com.raassh.dicodinggithubuserapp.data.api.ApiConfig
+import com.raassh.dicodinggithubuserapp.data.api.ListUsersResponse
 import com.raassh.dicodinggithubuserapp.misc.Event
 import retrofit2.Call
 import retrofit2.Callback

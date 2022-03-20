@@ -12,12 +12,12 @@
         android:id="@+id/favorite"
         android:icon="@drawable/ic_baseline_favorite_24"
         android:title="@string/favorite"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/dark_mode"
         android:icon="@drawable/ic_outline_dark_mode_24"
         android:title="@string/dark_mode"
         android:checkable="true"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
 </menu>

@@ -1,10 +1,12 @@
 package com.raassh.dicodinggithubuserapp.viewmodel
 
+import android.app.Application
 import android.util.Log
 import androidx.lifecycle.*
-import com.raassh.dicodinggithubuserapp.api.ApiConfig
-import com.raassh.dicodinggithubuserapp.api.ListUsersResponse
-import com.raassh.dicodinggithubuserapp.api.SearchUserResponse
+import com.raassh.dicodinggithubuserapp.data.UserRepository
+import com.raassh.dicodinggithubuserapp.data.api.ApiConfig
+import com.raassh.dicodinggithubuserapp.data.api.ListUsersResponse
+import com.raassh.dicodinggithubuserapp.data.api.SearchUserResponse
 import com.raassh.dicodinggithubuserapp.misc.Event
 import com.raassh.dicodinggithubuserapp.misc.SettingPreferences
 import kotlinx.coroutines.launch

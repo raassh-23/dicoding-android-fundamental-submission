@@ -2,18 +2,19 @@ package com.raassh.dicodinggithubuserapp.view.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayoutMediator
-import com.raassh.dicodinggithubuserapp.BuildConfig
 import com.raassh.dicodinggithubuserapp.R
 import com.raassh.dicodinggithubuserapp.adapter.FollowSectionsPagerAdapter
-import com.raassh.dicodinggithubuserapp.api.UserDetailResponse
+import com.raassh.dicodinggithubuserapp.data.api.UserDetailResponse
 import com.raassh.dicodinggithubuserapp.databinding.ActivityUserDetailBinding
-import com.raassh.dicodinggithubuserapp.misc.UserItem
+import com.raassh.dicodinggithubuserapp.data.UserItem
 import com.raassh.dicodinggithubuserapp.misc.visibility
 import com.raassh.dicodinggithubuserapp.viewmodel.UserDetailViewModel
 
@@ -22,16 +23,20 @@ class UserDetailActivity : AppCompatActivity() {
     private val userDetailViewModel
             by viewModels<UserDetailViewModel> {
                 UserDetailViewModel.Factory(
-                    intent.getParcelableExtra<UserItem>(EXTRA_USER)?.username ?: ""
+                    intent.getParcelableExtra<UserItem>(EXTRA_USER)?.username ?: "",
+                    application
                 )
             }
+
+    private lateinit var user: UserItem
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityUserDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val user = intent.getParcelableExtra<UserItem>(EXTRA_USER) as UserItem
+        user = intent.getParcelableExtra<UserItem>(EXTRA_USER) as UserItem
+
         userDetailViewModel.apply {
             this.user.observe(this@UserDetailActivity) {
                 showDetails(it)
@@ -50,10 +55,15 @@ class UserDetailActivity : AppCompatActivity() {
             canRetry.observe(this@UserDetailActivity) {
                 showRetry(it)
             }
+
+            isFavorite.observe(this@UserDetailActivity) {
+                binding.btnFavorite.visibility = visibility(!it)
+                binding.btnUnfavorite.visibility = visibility(it)
+            }
         }
 
         binding.apply {
-            btnBack.setOnClickListener { finish() }
+            btnRetry.setOnClickListener { userDetailViewModel.getUserDetail() }
             btnShare.setOnClickListener {
                 val sendIntent = Intent().apply {
                     action = Intent.ACTION_SEND
@@ -64,8 +74,12 @@ class UserDetailActivity : AppCompatActivity() {
                 val shareIntent = Intent.createChooser(sendIntent, null)
                 startActivity(shareIntent)
             }
-
-            btnRetry.setOnClickListener { userDetailViewModel.getUserDetail() }
+            btnFavorite.setOnClickListener {
+                userDetailViewModel.setFavorite(user, true)
+            }
+            btnUnfavorite.setOnClickListener {
+                userDetailViewModel.setFavorite(user, false)
+            }
         }
 
         val viewPager = binding.followViewPager.apply {
@@ -78,6 +92,18 @@ class UserDetailActivity : AppCompatActivity() {
 
         }.attach()
 
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    }
+
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            android.R.id.home -> {
+                finish()
+                return true
+            }
+            else -> return super.onOptionsItemSelected(item)
+        }
     }
 
     private fun showError(text: String) {

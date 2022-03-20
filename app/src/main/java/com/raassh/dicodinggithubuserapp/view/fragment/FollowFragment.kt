@@ -1,5 +1,6 @@
 package com.raassh.dicodinggithubuserapp.view.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,10 +12,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.raassh.dicodinggithubuserapp.R
 import com.raassh.dicodinggithubuserapp.adapter.ListUserAdapter
-import com.raassh.dicodinggithubuserapp.api.ListUsersResponse
+import com.raassh.dicodinggithubuserapp.data.UserItem
+import com.raassh.dicodinggithubuserapp.data.api.ListUsersResponse
 import com.raassh.dicodinggithubuserapp.databinding.FragmentFollowBinding
 import com.raassh.dicodinggithubuserapp.misc.createUserArrayList
 import com.raassh.dicodinggithubuserapp.misc.visibility
+import com.raassh.dicodinggithubuserapp.view.activity.UserDetailActivity
 import com.raassh.dicodinggithubuserapp.viewmodel.FollowViewModel
 
 class FollowFragment : Fragment() {
@@ -85,7 +88,18 @@ class FollowFragment : Fragment() {
             if (users.count() == 0) {
                 emptyText.visibility = visibility(true)
             } else {
-                rvUsers.adapter = ListUserAdapter(users)
+                rvUsers.adapter = ListUserAdapter(users).apply {
+                    setOnItemClickCallback(object : ListUserAdapter.OnItemClickCallback {
+                        override fun onItemClicked(user: UserItem) {
+                            val detailsIntent =
+                                Intent(requireContext(), UserDetailActivity::class.java)
+                                    .apply {
+                                        putExtra(UserDetailActivity.EXTRA_USER, user)
+                                    }
+                            startActivity(detailsIntent)
+                        }
+                    })
+                }
             }
         }
     }

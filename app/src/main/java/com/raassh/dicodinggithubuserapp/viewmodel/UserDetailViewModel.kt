@@ -1,19 +1,23 @@
 package com.raassh.dicodinggithubuserapp.viewmodel
 
+import android.app.Application
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.raassh.dicodinggithubuserapp.BuildConfig
-import com.raassh.dicodinggithubuserapp.api.ApiConfig
-import com.raassh.dicodinggithubuserapp.api.UserDetailResponse
+import com.raassh.dicodinggithubuserapp.data.UserItem
+import com.raassh.dicodinggithubuserapp.data.UserRepository
+import com.raassh.dicodinggithubuserapp.data.api.ApiConfig
+import com.raassh.dicodinggithubuserapp.data.api.UserDetailResponse
 import com.raassh.dicodinggithubuserapp.misc.Event
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class UserDetailViewModel(private val username: String) : ViewModel() {
+class UserDetailViewModel(private val username: String, application: Application) : ViewModel() {
+    private val userRepository = UserRepository.getInstance(application)
+
     private val _user = MutableLiveData<UserDetailResponse>()
     val user: LiveData<UserDetailResponse> = _user
 
@@ -25,6 +29,8 @@ class UserDetailViewModel(private val username: String) : ViewModel() {
 
     private val _canRetry = MutableLiveData<Boolean>()
     val canRetry: LiveData<Boolean> = _canRetry
+
+    val isFavorite = userRepository.isFavorite(username)
 
     init {
         getUserDetail()
@@ -62,15 +68,23 @@ class UserDetailViewModel(private val username: String) : ViewModel() {
 
     }
 
+    fun setFavorite(user: UserItem, isFavorite: Boolean) {
+        if (isFavorite) {
+            userRepository.insertFavorite(user)
+        } else {
+            userRepository.deleteFavorite(user)
+        }
+    }
+
     companion object {
         private const val TAG = "UserDetailViewModel"
     }
 
     // Ref: https://medium.com/@lucasnrb/advanced-viewmodel-9cca1499addb
     @Suppress("UNCHECKED_CAST")
-    class Factory(private val username: String) : ViewModelProvider.Factory {
+    class Factory(private val username: String, private val application: Application) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return UserDetailViewModel(username) as T
+            return UserDetailViewModel(username, application) as T
         }
     }
 }
